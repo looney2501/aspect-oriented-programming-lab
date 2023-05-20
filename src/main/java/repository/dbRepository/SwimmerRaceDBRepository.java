@@ -1,7 +1,5 @@
 package repository.dbRepository;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import domain.entities.Race;
 import domain.entities.Swimmer;
 import domain.entities.SwimmerRace;
@@ -23,12 +21,10 @@ import java.util.Properties;
 public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
 
     private final JdbcUtils jdbcUtils;
-    private static final Logger logger = LogManager.getLogger();
     private SwimmerRepository swimmerRepository;
     private RaceRepository raceRepository;
 
     public SwimmerRaceDBRepository(Properties properties, SwimmerRepository swimmerRepository, RaceRepository raceRepository) {
-        logger.info("Initialising SwimmerRaceDBRepository with properties {}", properties);
         jdbcUtils = new JdbcUtils(properties);
         this.swimmerRepository = swimmerRepository;
         this.raceRepository = raceRepository;
@@ -44,7 +40,6 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
 
     @Override
     public Integer add(SwimmerRace elem) {
-        logger.traceEntry("add(SwimmerRace = {})", elem);
         Integer id = null;
 
         Connection connection = jdbcUtils.getConnection();
@@ -64,7 +59,7 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return logger.traceExit("Result: id = {}", id);
+        return id;
     }
 
     @Override
@@ -84,8 +79,6 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
 
     @Override
     public Integer getNumberOfSwimmersForRace(Race race) {
-        logger.traceEntry("getNumberOfSwimmersForRace(race = {})", race);
-
         int numberOfSwimmers = 0;
 
         Connection connection = jdbcUtils.getConnection();
@@ -100,12 +93,11 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: numberOfSwimmers = {}", numberOfSwimmers);
+        return numberOfSwimmers;
     }
 
     @Override
     public List<Swimmer> findAllSwimmersForRace(Race race) {
-        logger.traceEntry("getNumberOfSwimmersForRace(race = {})", race);
         List<Swimmer> allSwimmersForRace = new ArrayList<>();
 
         Connection connection = jdbcUtils.getConnection();
@@ -126,13 +118,11 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: allSwimmersForRace = {}", allSwimmersForRace);
+        return allSwimmersForRace;
     }
 
     @Override
     public List<Race> findAllRacesForSwimmer(Swimmer swimmer) {
-        logger.traceEntry("findAllRacesForSwimmer(swimmer = {})", swimmer);
-
         List<Race> allRacesForSwimmer = new ArrayList<>();
 
         Connection connection = jdbcUtils.getConnection();
@@ -156,6 +146,6 @@ public class SwimmerRaceDBRepository implements SwimmerRaceRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: allRacesForSwimmer = {}", allRacesForSwimmer);
+        return allRacesForSwimmer;
     }
 }

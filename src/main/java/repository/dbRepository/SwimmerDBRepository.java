@@ -1,7 +1,5 @@
 package repository.dbRepository;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import domain.entities.Swimmer;
 import repository.interfaces.SwimmerRepository;
 import utils.JdbcUtils;
@@ -15,16 +13,13 @@ import java.util.Properties;
 public class SwimmerDBRepository implements SwimmerRepository {
 
     private final JdbcUtils jdbcUtils;
-    private static final Logger logger = LogManager.getLogger();
 
     public SwimmerDBRepository(Properties properties) {
-        logger.info("Initialising SwimmerDBRepository with properties {}", properties);
         this.jdbcUtils = new JdbcUtils(properties);
     }
 
     @Override
     public Integer add(Swimmer elem) {
-        logger.traceEntry("add(Swimmer = {})", elem);
         Connection connection = jdbcUtils.getConnection();
         Integer id = null;
 
@@ -43,7 +38,7 @@ public class SwimmerDBRepository implements SwimmerRepository {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return logger.traceExit("Result: id = {}", id);
+        return id;
     }
 
     @Override
@@ -56,7 +51,6 @@ public class SwimmerDBRepository implements SwimmerRepository {
 
     @Override
     public Swimmer findById(Integer id) {
-        logger.traceEntry("findById(id = {})", id);
         Swimmer foundSwimmer = null;
 
         Connection connection = jdbcUtils.getConnection();
@@ -76,6 +70,6 @@ public class SwimmerDBRepository implements SwimmerRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: Swimmer = {}", foundSwimmer);
+        return foundSwimmer;
     }
 }

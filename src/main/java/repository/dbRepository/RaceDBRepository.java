@@ -1,7 +1,5 @@
 package repository.dbRepository;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import domain.entities.Race;
 import domain.enums.SwimmingDistances;
 import domain.enums.SwimmingStyles;
@@ -19,19 +17,13 @@ import java.util.Properties;
 public class RaceDBRepository implements RaceRepository {
 
     private final JdbcUtils jdbcUtils;
-    private static final Logger logger =  LogManager.getLogger();
 
     public RaceDBRepository(Properties properties) {
-        logger.info("Initialising RaceDBRepository with properties {}", properties);
         jdbcUtils = new JdbcUtils(properties);
     }
 
     @Override
     public Race findRaceByDistanceAndStyle(SwimmingDistances swimmingDistance, SwimmingStyles swimmingStyle) {
-        logger.traceEntry("findRaceByDistanceAndStyle(swimmingDistance = {}, swimmingStyle = {})",
-                swimmingDistance,
-                swimmingStyle);
-
         Race race = null;
 
         Connection connection = jdbcUtils.getConnection();
@@ -48,13 +40,11 @@ public class RaceDBRepository implements RaceRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return logger.traceExit("Result: race = {}", race);
+        return race;
     }
 
     @Override
     public List<Race> findAllRaces() {
-        logger.traceEntry("findAllRaces()");
-
         List<Race> races = new ArrayList<>();
 
         Connection connection = jdbcUtils.getConnection();
@@ -77,7 +67,7 @@ public class RaceDBRepository implements RaceRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: allRaces  = {}", races);
+        return races;
     }
 
     @Override
@@ -97,7 +87,6 @@ public class RaceDBRepository implements RaceRepository {
 
     @Override
     public Race findById(Integer id) {
-        logger.traceEntry("findById(id = {})", id);
         Race race = null;
 
         Connection connection = jdbcUtils.getConnection();
@@ -116,6 +105,6 @@ public class RaceDBRepository implements RaceRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: race = {}", race);
+        return race;
     }
 }

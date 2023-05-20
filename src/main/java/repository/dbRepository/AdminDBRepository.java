@@ -1,7 +1,5 @@
 package repository.dbRepository;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import domain.entities.Admin;
 import repository.interfaces.AdminRepository;
 import utils.JdbcUtils;
@@ -15,10 +13,8 @@ import java.util.Properties;
 public class AdminDBRepository implements AdminRepository {
 
     private final JdbcUtils jdbcUtils;
-    private static final Logger logger = LogManager.getLogger();
 
     public AdminDBRepository(Properties properties) {
-        logger.info("Initialising AdminDBRepository with properties {}", properties);
         this.jdbcUtils = new JdbcUtils(properties);
     }
 
@@ -45,8 +41,6 @@ public class AdminDBRepository implements AdminRepository {
 
     @Override
     public Admin findByUsernameAndPassword(String username, String password) {
-        logger.traceEntry("findByUsernameAndPassword(username = {}, password {})", username, password);
-
         Admin admin = null;
 
         Connection connection = jdbcUtils.getConnection();
@@ -64,6 +58,6 @@ public class AdminDBRepository implements AdminRepository {
             e.printStackTrace();
         }
 
-        return logger.traceExit("Result: admin = {}", admin);
+        return admin;
     }
 }
