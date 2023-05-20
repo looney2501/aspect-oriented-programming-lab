@@ -13,6 +13,7 @@ import domain.enums.SwimmingDistances;
 import domain.enums.SwimmingStyles;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -33,7 +34,7 @@ public class MainController extends Controller {
     @FXML
     private TableColumn<RaceDTO, String> raceSwimmersNoColumn;
     @FXML
-    private final ObservableList<RaceDTO> raceDTOsModel = FXCollections.observableArrayList();
+    public final ObservableList<RaceDTO> raceDTOsModel = FXCollections.observableArrayList();
     @FXML
     private final ObservableList<SwimmingDistances> distances = FXCollections.observableArrayList();
     @FXML
@@ -81,15 +82,18 @@ public class MainController extends Controller {
             MessageAlert.showErrorMessage(null, "Selectati cel putin o cursa!");
         }
         else {
-            List<RaceDetailsDTO> raceDetailsDTOs = selectedIndices.stream()
-                            .map(raceDTO -> new RaceDetailsDTO(raceDTO.getDistance(), raceDTO.getStyle()))
-                            .toList();
-            service.addSwimmer(firstName, lastName, Integer.parseInt(age), raceDetailsDTOs);
-            initializeModels();
-            firstNameTextField.clear();
-            lastNameTextField.clear();
-            ageTextField.clear();
+            serviceAddSwimmer(firstName, lastName, age, selectedIndices);
         }
+    }
+
+    private void serviceAddSwimmer(String firstName, String lastName, String age, ObservableList<RaceDTO> selectedIndices) {
+        List<RaceDetailsDTO> raceDetailsDTOs = selectedIndices.stream()
+                .map(raceDTO -> new RaceDetailsDTO(raceDTO.getDistance(), raceDTO.getStyle()))
+                .toList();
+        service.addSwimmer(firstName, lastName, Integer.parseInt(age), raceDetailsDTOs);
+        firstNameTextField.clear();
+        lastNameTextField.clear();
+        ageTextField.clear();
     }
 
     public void initialize() {
